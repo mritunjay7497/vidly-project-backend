@@ -12,10 +12,17 @@ const generes = [
     {'id':6,'name':'Sci-fi'},
 ];
 
+
+// Route to get the home page
+router.get('/',(req,res) => {
+    res.status(200).send('Welcome to Vidly movie house..!!');
+})
+
 // Route to Generes list
 router.get('/',(req,res) => {
     res.status(200).send(generes);
 });
+
 
 // Route to get a particular generes
 router.get('/:id',(req,res) => {
@@ -24,8 +31,9 @@ router.get('/:id',(req,res) => {
         res.status(404).send('Requested genere not found !!');
         return;
     };
-    res.status(200).send(generes);
+    res.status(200).send(genere);
 });
+
 
 // Route to add a new genere
 router.post('/',(req,res) => {
@@ -43,6 +51,8 @@ router.post('/',(req,res) => {
     res.send(generes);
 });
 
+
+// Route to add a new genere
 router.put('/:id',(req,res) => {
     // Look up the genere, if not found return 404
     const genere = generes.find(g => g.id === parseInt(req.params.id));
@@ -63,6 +73,8 @@ router.put('/:id',(req,res) => {
     res.send(genere);
 });
 
+
+// Route to delete a genere
 router.delete('/:id',(req,res) => {
     const genere = generes.find(g => g.id === parseInt(req.params.id));
     if(!genere){
@@ -75,6 +87,7 @@ router.delete('/:id',(req,res) => {
     res.send(generes);
 })
 
+
 // Validate Genere
 function validateGenere(genere){
     const schema = {
@@ -83,4 +96,5 @@ function validateGenere(genere){
     return Joi.validate(genere,schema);
 };
 
+// export this module
 module.exports = router;
