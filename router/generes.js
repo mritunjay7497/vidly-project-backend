@@ -1,26 +1,18 @@
 const express = require('express');
 const Joi = require('joi');
+const {addGenere,getGeneres,updateGenere,deleteGenere } = require('../database/generes');
 
 const router = express.Router();
 
-const generes = [
-    {'id':1,'name':'Action'},
-    {'id':2,'name':'Comedy'},
-    {'id':3,'name':'Horror'},
-    {'id':4,'name':'Romance'},
-    {'id':5,'name':'Thriller'},
-    {'id':6,'name':'Sci-fi'},
-];
-
-
-// Route to get the home page
+// Route to get all Generes list
 router.get('/',(req,res) => {
-    res.status(200).send('Welcome to Vidly movie house..!!');
-})
 
-// Route to Generes list
-router.get('/',(req,res) => {
-    res.status(200).send(generes);
+    const genereList = getGeneres()
+        .then(function(genere) {
+            res.send(genere);
+        })
+        .catch((err) => console.log(err));
+
 });
 
 
@@ -43,22 +35,16 @@ router.post('/',(req,res) => {
         res.status(400).send(error.details[0].message);
         return;
     };
-    const genere ={
-        id : generes.length + 1,
-        name : req.body.name
-    };
-    generes.push(genere);
-    res.send(generes);
+
+    // add a new genere to database upon post request
+    const genere = addGenere(req.body.name)
+        .then(() => res.send("Genere added successfully ..."))
+        .catch((err) => console.log(err));
 });
 
 
 // Route to add a new genere
-router.put('/:id',(req,res) => {
-    // Look up the genere, if not found return 404
-    const genere = generes.find(g => g.id === parseInt(req.params.id));
-    if(!genere){
-        return res.status(404).send("No such generes found, try looking up again ...");
-    };
+router.put('/:oldname',(req,res) => {
 
     // Validate the name of genere entered by the user
     const { error } = validateGenere(req.body);
@@ -66,25 +52,28 @@ router.put('/:id',(req,res) => {
         return res.status(400).send(error.details[0].message);
     };
 
-    // Update the genere
-    genere.name = req.body.name;
-
     // send the udated genere
-    res.send(genere);
+    const updatedGenere = updateGenere(req.params.oldname,req.body.name)
+        .then((genere) => res.send(genere))
+        .catch((err) => console.log(err));
+
 });
 
 
 // Route to delete a genere
-router.delete('/:id',(req,res) => {
-    const genere = generes.find(g => g.id === parseInt(req.params.id));
-    if(!genere){
-        return res.status(404).send("No such generes found ...");
-    };
-    // Delete genere
-    const index = generes.indexOf(genere);
-    generes.splice(index,1);
+router.delete('/:name',(req,res) => {
 
-    res.send(generes);
+    // Validate the name of genere entered by the user
+    const { error } = validateGenere(req.body.name);
+    if(error){
+        return res.status(400).send(error.details[0].message);
+    };
+
+    // Delete a genere
+    const deletedGenere = deleteGenere(req.params.name)
+        .then(() => res.end())
+        .catch((err) => console.log(err));
+
 })
 
 
