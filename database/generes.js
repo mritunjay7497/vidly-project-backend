@@ -19,7 +19,8 @@ const genereSchema = new mongoose.Schema({
         type: String,
         required:true,
         minlength: 5,
-        maxlength: 30
+        maxlength: 30,
+        trim:true
     },
     isAdult: Boolean,
     enum: ['Action','Comedy','Horror','Romance','Thriller','Erotic','Drama']
@@ -38,7 +39,6 @@ async function addGenere(genereName){
     });
     // save the document formed by above model
     return await genere.save();
-    // return genere;
 };
 
 
@@ -46,8 +46,8 @@ async function addGenere(genereName){
 async function getGeneres(){
     const generes = await GenereModel
         .find()
-        .sort({name:1})
-        .select({name:1,id:1})
+        .sort('name')
+        .select('name')
     return (generes);
 };
 

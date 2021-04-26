@@ -1,11 +1,13 @@
+// Endpoint to do CRUD operation on generes
+
 const express = require('express');
 const Joi = require('joi');
 const {addGenere,getGeneres,updateGenere,deleteGenere } = require('../database/generes');
 
-const router = express.Router();
+const genereRoute = express.Router();
 
 // Route to get all Generes list
-router.get('/',(req,res) => {
+genereRoute.get('/',(req,res) => {
 
     const genereList = getGeneres()
         .then(function(genere) {
@@ -16,19 +18,21 @@ router.get('/',(req,res) => {
 });
 
 
-// Route to get a particular generes
-router.get('/:id',(req,res) => {
-    const genere = generes.find(g => g.id === parseInt(req.params.id));
-    if(!genere){
-        res.status(404).send('Requested genere not found !!');
-        return;
-    };
-    res.status(200).send(genere);
-});
+//  Route to get a particular generes
+// TODO
+// router.get('/:name',(req,res) => {
+//     // const genere = generes.find(g => g.id === parseInt(req.params.id));
+//     // if(!genere){
+//     //     res.status(404).send('Requested genere not found !!');
+//     //     return;
+//     // };
+//     const genere = getGeneres()
+//     res.send(genere);
+// });
 
 
 // Route to add a new genere
-router.post('/',(req,res) => {
+genereRoute.post('/',(req,res) => {
     const { error } = validateGenere(req.body);
 
     if(error){
@@ -43,8 +47,8 @@ router.post('/',(req,res) => {
 });
 
 
-// Route to add a new genere
-router.put('/:oldname',(req,res) => {
+// Route to update a  genere
+genereRoute.put('/:oldname',(req,res) => {
 
     // Validate the name of genere entered by the user
     const { error } = validateGenere(req.body);
@@ -61,7 +65,7 @@ router.put('/:oldname',(req,res) => {
 
 
 // Route to delete a genere
-router.delete('/:name',(req,res) => {
+genereRoute.delete('/:name',(req,res) => {
 
     // Validate the name of genere entered by the user
     const { error } = validateGenere(req.body.name);
@@ -86,4 +90,4 @@ function validateGenere(genere){
 };
 
 // export this module
-module.exports = router;
+module.exports = genereRoute;
