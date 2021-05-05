@@ -8,7 +8,7 @@ const authorize = require('../middleware/login');
 const movieRoute = express.Router();
 
 // Route to add a movie
-movieRoute.post( '/',authorize,(req,res) => {
+movieRoute.post( '/',authorize,admin,(req,res) => {
     // const { error } = validateMovie(req.body);
 
     // if(error){

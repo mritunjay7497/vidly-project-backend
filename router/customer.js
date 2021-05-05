@@ -4,13 +4,14 @@ const express = require('express');
 const Joi = require('joi');
 const { addCustomer,getCustomers,updateCustomer,deleteCustomer } = require('../models/customer');
 const authorize = require('../middleware/login');
+const admin = require('../middleware/admin');
 
 const customerRoute = express.Router();
 
 
 
 // Route to get all the customer list
-customerRoute.get('/',authorize,(req,res) => {
+customerRoute.get('/',authorize,admin,(req,res) => {
     const customerList = getCustomers()
         .then((customers) => res.send(customers))
         .catch((err) => console.log(err));
@@ -22,7 +23,7 @@ customerRoute.get('/',authorize,(req,res) => {
 
 
 // Route to add a new customer
-customerRoute.post('/',authorize,(req,res) => {
+customerRoute.post('/',authorize,admin,(req,res) => {
     const { error } = validateCustomer(req.body);
 
     if(error){
@@ -40,7 +41,7 @@ customerRoute.post('/',authorize,(req,res) => {
 
 
 // Route to update an existing customer
-customerRoute.put('/:name',authorize,(req,res) => {
+customerRoute.put('/:name',authorize,admin,(req,res) => {
     const { error } = validateCustomer(req.body);
 
     if(error){
@@ -55,7 +56,7 @@ customerRoute.put('/:name',authorize,(req,res) => {
 });
 
 // Route to delete an existing customer
-customerRoute.delete('/:name',authorize,(req,res) => {
+customerRoute.delete('/:name',authorize,admin,(req,res) => {
     // delete a customer whose name is supplied
     const customer = deleteCustomer(req.params.name)
         .then((person) => res.send("customer record deleted ..."))
