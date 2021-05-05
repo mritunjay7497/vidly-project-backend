@@ -3,7 +3,7 @@ const Joi = require('joi');
 const { addMovie } = require('../models/movies');
 const { GenereModel } = require('../models/generes');
 const authorize = require('../middleware/login');
-
+const admin = require('../middleware/admin');
 
 const movieRoute = express.Router();
 
