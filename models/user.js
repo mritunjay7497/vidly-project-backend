@@ -68,13 +68,26 @@ async function addUser(userName,userEmail,userPassword){
         email: userEmail,
         password: hashedPassword
     });
-    const token = user.generateAuthToken();
     await user.save();
 
+    const token = user.generateAuthToken();
+
+    const response = _.pick(user,['name','email']);
+
     return(
-        _.pick(user,['name','email','token'])
+        {
+            response,
+            token
+        }
     );
 };
 
-module.exports = addUser;
+
+// get user profile
+async function getUser(id){
+    const user = await UserModel.findById(id).select('-password');
+    return user;
+};
+
+module.exports = { addUser,getUser };
 // module.exports = UserModel;

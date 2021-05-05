@@ -5,8 +5,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // connecting to the mongoDB
-dburi = process.env.dbURI;
-// console.log(dburi);
+const dburi = process.env.dbURI;
 
 mongoose.connect(dburi,{ useNewUrlParser: true,useUnifiedTopology: true, useFindAndModify: false })
     .then(() => console.log("connected to the vidly-movie-backend database"))

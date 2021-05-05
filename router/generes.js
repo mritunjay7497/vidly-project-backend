@@ -19,19 +19,6 @@ genereRoute.get('/',(req,res) => {
 });
 
 
-//  Route to get a particular generes
-// TODO
-// router.get('/:name',(req,res) => {
-//     // const genere = generes.find(g => g.id === parseInt(req.params.id));
-//     // if(!genere){
-//     //     res.status(404).send('Requested genere not found !!');
-//     //     return;
-//     // };
-//     const genere = getGeneres()
-//     res.send(genere);
-// });
-
-
 // Route to add a new genere
 genereRoute.post('/',authorize,(req,res) => {
     const { error } = validateGenere(req.body);
@@ -79,7 +66,7 @@ genereRoute.delete('/:name',authorize,(req,res) => {
         .then(() => res.end())
         .catch((err) => console.log(err));
 
-})
+});
 
 
 // Validate Genere

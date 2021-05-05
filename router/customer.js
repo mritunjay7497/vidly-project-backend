@@ -10,7 +10,7 @@ const customerRoute = express.Router();
 
 
 // Route to get all the customer list
-customerRoute.get('/',(req,res) => {
+customerRoute.get('/',authorize,(req,res) => {
     const customerList = getCustomers()
         .then((customers) => res.send(customers))
         .catch((err) => console.log(err));
