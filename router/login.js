@@ -14,7 +14,7 @@ loginRoute.post('/',(req,res) => {
     };
 
     const validCreds = userAuth(req.body.email,req.body.password)
-        .then((data) => res.send(data))
+        .then((data) => res.header('x-auth-token',data.token).send("Login successful."))
         .catch((err) => res.send(err));
 });
 

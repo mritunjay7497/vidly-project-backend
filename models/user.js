@@ -36,11 +36,19 @@ const userSchema = new mongoose.Schema({
         minlength: 8,
         required:true,
         maxlength: 1024
-    }
+    },
+    isAdmin: Boolean
 });
 
 userSchema.methods.generateAuthToken = function(){
-    const token  = jwt.sign({_id: this._id},secret);
+
+    const token  = jwt.sign({
+
+        _id: this._id,
+        isAdmin: this.isAdmin
+
+    },secret);
+
     return token;
 }
 
@@ -89,5 +97,4 @@ async function getUser(id){
     return user;
 };
 
-module.exports = { addUser,getUser };
-// module.exports = UserModel;
+module.exports = { addUser,getUser,UserModel };

@@ -11,12 +11,13 @@ dotenv.config();
 const dburi = process.env.dbURI;
 const secret = process.env.jwtSecret;
 
+
 mongoose.connect(dburi,{ useNewUrlParser: true,useUnifiedTopology: true, useFindAndModify: false })
     .then(() => console.log("connected to the vidly-movie-backend database"))
     .catch((err) => console.log("ERROR\n",err.message));
 
 async function userAuth(email,password){
-    let user = await UserModel.findOne({email: email});
+    const user = await UserModel.findOne({email: email});
     if(!user){
         return "Invalid Email or Password."
     };
@@ -28,7 +29,9 @@ async function userAuth(email,password){
         return "Invalid Email or Password."
     };
     const token = user.generateAuthToken();
-    return(token);  
+    return(
+        {token}
+    );  
 };
 
 module.exports = userAuth;
