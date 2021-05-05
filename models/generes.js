@@ -26,7 +26,7 @@ const genereSchema = new mongoose.Schema({
     enum: ['Action','Comedy','Horror','Romance','Thriller','Erotic','Drama']
 });
 
-// comoile a model from above schema and save the data to the database
+// compile a model from above schema and save the data to the database
 const GenereModel = new mongoose.model('Genere',genereSchema);
 
 
@@ -53,6 +53,7 @@ async function getGeneres(){
 
 // update the genere name once the old genere name is sent as a parameter via
 // a PUT request to http://localhost:1111/api/generes/:oldName
+
 async function updateGenere(oldName,newName){
     const genere = await GenereModel
         .findOneAndUpdate(
@@ -67,6 +68,7 @@ async function updateGenere(oldName,newName){
     return await genere;
 };
 
+
 // Delete a genere name once the old genere name is send as a parameter via
 // a DELETE request to http://localhost:1111/api/generes/:oldname
 
@@ -78,4 +80,4 @@ async function deleteGenere(oldName){
         .select({name:1,id:1})
 };
 
-module.exports = { addGenere,getGeneres,updateGenere,deleteGenere };
+module.exports = { addGenere,getGeneres,updateGenere,deleteGenere,GenereModel,genereSchema };

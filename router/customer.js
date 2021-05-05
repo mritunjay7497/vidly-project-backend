@@ -2,7 +2,8 @@
 
 const express = require('express');
 const Joi = require('joi');
-const { addCustomer,getCustomers,updateCustomer,deleteCustomer } = require('../database/customer');
+const { addCustomer,getCustomers,updateCustomer,deleteCustomer } = require('../models/customer');
+const authorize = require('../middleware/login');
 
 const customerRoute = express.Router();
 
@@ -21,7 +22,7 @@ customerRoute.get('/',(req,res) => {
 
 
 // Route to add a new customer
-customerRoute.post('/',(req,res) => {
+customerRoute.post('/',authorize,(req,res) => {
     const { error } = validateCustomer(req.body);
 
     if(error){
@@ -39,7 +40,7 @@ customerRoute.post('/',(req,res) => {
 
 
 // Route to update an existing customer
-customerRoute.put('/:name',(req,res) => {
+customerRoute.put('/:name',authorize,(req,res) => {
     const { error } = validateCustomer(req.body);
 
     if(error){
@@ -54,7 +55,7 @@ customerRoute.put('/:name',(req,res) => {
 });
 
 // Route to delete an existing customer
-customerRoute.delete('/:name',(req,res) => {
+customerRoute.delete('/:name',authorize,(req,res) => {
     // delete a customer whose name is supplied
     const customer = deleteCustomer(req.params.name)
         .then((person) => res.send("customer record deleted ..."))

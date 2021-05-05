@@ -2,7 +2,8 @@
 
 const express = require('express');
 const Joi = require('joi');
-const {addGenere,getGeneres,updateGenere,deleteGenere } = require('../database/generes');
+const {addGenere,getGeneres,updateGenere,deleteGenere } = require('../models/generes');
+const authorize = require('../middleware/login');
 
 const genereRoute = express.Router();
 
@@ -32,7 +33,7 @@ genereRoute.get('/',(req,res) => {
 
 
 // Route to add a new genere
-genereRoute.post('/',(req,res) => {
+genereRoute.post('/',authorize,(req,res) => {
     const { error } = validateGenere(req.body);
 
     if(error){
@@ -48,7 +49,7 @@ genereRoute.post('/',(req,res) => {
 
 
 // Route to update a  genere
-genereRoute.put('/:oldname',(req,res) => {
+genereRoute.put('/:oldname',authorize,(req,res) => {
 
     // Validate the name of genere entered by the user
     const { error } = validateGenere(req.body);
@@ -65,7 +66,7 @@ genereRoute.put('/:oldname',(req,res) => {
 
 
 // Route to delete a genere
-genereRoute.delete('/:name',(req,res) => {
+genereRoute.delete('/:name',authorize,(req,res) => {
 
     // Validate the name of genere entered by the user
     const { error } = validateGenere(req.body.name);

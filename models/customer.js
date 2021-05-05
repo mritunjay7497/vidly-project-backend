@@ -8,7 +8,6 @@ dotenv.config();
 
 // connecting to the mongoDB
 dburi = process.env.dbURI;
-// console.log(dburi);
 
 mongoose.connect(dburi,{ useNewUrlParser: true,useUnifiedTopology: true, useFindAndModify: false })
     .then(() => console.log("connected to the vidly-movie-backend database"))
@@ -92,6 +91,11 @@ async function deleteCustomer(oldName){
             {name:oldName}
         )
         .select({name:1,id:1})
+    
+    if(!customer){
+        return "No such customer found with the given information ..."
+    };
+    
 };
 
 module.exports = { addCustomer,getCustomers,updateCustomer,deleteCustomer }
